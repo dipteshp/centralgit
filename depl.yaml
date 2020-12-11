@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver-simple-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webserver-simple-app
+  template:
+    metadata:
+      labels:
+        app: webserver-simple-app
+    spec:
+      containers:
+        - name: webserver-simple-container
+          image: 294835980567.dkr.ecr.us-east-2.amazonaws.com/demo-app:latest
+          ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webserver-simple-service
+spec:
+  selector:
+    app: webserver-simple-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
